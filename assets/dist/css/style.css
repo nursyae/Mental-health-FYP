@@ -1,0 +1,15 @@
+.card-header {
+    background-color: #5fccf4;
+    color: black;
+
+}
+
+a.logo {
+    font-size: 21px;
+    color: #2e2e2e;
+    float: left;
+    text-transform: uppercase;
+    background: url('../img/logo/unikl.png') 10px 10px;
+    background-repeat: no-repeat;
+    width: 100px;
+}
