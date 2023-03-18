@@ -22,4 +22,10 @@ class Users_model extends CI_Model
         $query = $this->db->get('users');
         return $query->result();
     }
+
+    public function total()
+    {
+        $query = $this->db->get('users');
+        return $query->num_rows();
+    }
 }

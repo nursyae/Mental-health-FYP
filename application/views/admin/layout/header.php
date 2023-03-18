@@ -8,7 +8,7 @@
     <title>Mental Health | <?= $title ?></title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/plugins') ?>/fontawesome-free/css/all.min.css">
 
     <link rel="stylesheet" href="<?= base_url('assets/plugins') ?>/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -34,7 +34,7 @@
                 <!--logo end-->
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
+                <a href="<?= base_url('admin') ?>" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -82,12 +82,6 @@
 
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
-            <a href="index3.html" class="brand-link">
-                <img src="<?= base_url('assets/dist/img/AdminLTELogo.png') ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Mental Health</span>
-            </a>
-
             <div class="sidebar">
 
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -100,12 +94,10 @@
                         </a>
                     </div>
                 </div>
-
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?php if ($title == 'Dashboard') : ?>Active<?php endif ?>">
+                            <a href="<?= base_url('admin') ?>" class="nav-link <?php if ($title == 'Dashboard') : ?>active<?php endif ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -113,7 +105,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/users') ?>" class="nav-link <?php if ($title == 'Users') : ?>Active<?php endif ?>">
+                            <a href="<?= base_url('admin/users') ?>" class="nav-link <?php if ($title == 'Users') : ?>active<?php endif ?>">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Users
@@ -121,6 +113,30 @@
                             </a>
                         </li>
 
+
+                        <li class="nav-item <?php if ($title == 'Mental Health') : ?>menu-open<?php endif ?>">
+                            <a href="#" class="nav-link <?php if ($title == 'Mental Health') : ?>active<?php endif ?>">
+                                <i class="nav-icon fas fa-heart"></i>
+                                <p>
+                                    Mental Health
+                                    <i class="right fas fa-angle-left left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?= base_url('admin/mental_health/add') ?>" class="nav-link <?= $this->uri->segment(3) == 'add' ? 'active' : '' ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Question</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('admin/mental_health/list') ?>" class="nav-link <?= $this->uri->segment(3) == 'list' ? 'active' : '' ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>List Question</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('admin/logout') ?>" class="nav-link">
                                 <i class="nav-icon fas fa-key"></i>
