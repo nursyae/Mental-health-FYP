@@ -9,3 +9,10 @@ function alert_message($msg, $type)
 
     return $msg;
 }
+
+function print_array($array)
+{
+    echo "<pre>";
+    print_r($array);
+    echo "</pre>";
+}

@@ -22,9 +22,13 @@ class Login extends CI_Controller
                 $user = $this->Users_model->get_by_email($this->input->post('email'));
                 if ($user) {
                     if (password_verify($this->input->post('password'), $user->user_password)) {
-
-                        $this->session->set_userdata('session_user', $user);
-                        redirect(base_url());
+                        if ($user->user_role == 'admin') {
+                            $this->session->set_userdata('session_admin', $user);
+                            redirect(base_url('admin'));
+                        } else if ($user->user_role == 'user') {
+                            $this->session->set_userdata('session_user', $user);
+                            redirect(base_url());
+                        }
                     } else {
                         $this->session->set_flashdata('message', alert_message('Wrong password', 'danger'));
                         redirect(base_url('login'));

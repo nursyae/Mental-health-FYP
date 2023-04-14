@@ -24,7 +24,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                List Users
+                                Test Record
                             </h4>
                         </div>
                         <div class="card-body">
@@ -37,26 +37,28 @@
                                             <th>NAME</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-                                            <th>#</th>
+                                            <th>Result</th>
+                                            <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($users as $user) : ?>
-                                            <?php if ($user->user_role == 'user') : ?>
+                                        <?php $no = 1;
+                                        foreach ($scores as $score) : ?>
+                                            <?php if ($score->user_role == 'user') : ?>
                                                 <tr>
-                                                    <td><?= $user->user_id ?></td>
-                                                    <td><?= $user->user_name ?></td>
-                                                    <td><?= $user->user_matrix_number ?></td>
-                                                    <td><?= $user->user_email ?></td>
-                                                    <td><?= $user->user_phone_number ?></td>
+                                                    <td><?= $no++ ?></td>
+                                                    <td><?= $score->user_matrix_number ?></td>
+                                                    <td><?= $score->user_name ?></td>
+                                                    <td><?= $score->user_email ?></td>
+                                                    <td><?= $score->user_phone_number ?></td>
                                                     <td>
-                                                        <button type="button" class="btn btn-warning btn-sm">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger btn-sm">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
+                                                        Depression = <?= $score->score_depression ?>
+                                                        <br>
+                                                        Anxiety = <?= $score->score_anxiety ?>
+                                                        <br>
+                                                        Stress = <?= $score->score_stress ?>
                                                     </td>
+                                                    <td data-date="<?= strtotime($score->score_created_at) ?>"><?= date("d F Y", strtotime($score->score_created_at)) ?></td>
                                                 </tr>
                                             <?php endif; ?>
                                         <?php endforeach; ?>

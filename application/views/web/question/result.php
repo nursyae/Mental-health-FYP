@@ -65,7 +65,7 @@
                                                 $type_depression = '';
                                                 $type_anxiety = '';
                                                 $type_stress = '';
-
+                                                
                                                 $depression = $score['depression'];
                                                 $anxiety = $score['anxiety'];
                                                 $stress = $score['stress'];
@@ -121,9 +121,9 @@
                                                     $type_stress = 'Extremely Sever';
                                                 }
                                                 ?>
-                                                <td style="background-color:<?= $color_depression ?>;"><strong><?= $depression ?><br><?= $type_depression ?></strong></td>
-                                                <td style="background-color:<?= $color_anxiety ?>;"><strong><?= $anxiety ?><br><?= $type_anxiety ?></strong></td>
-                                                <td style="background-color:<?= $color_stress ?>;"><strong><?= $stress ?><br><?= $type_stress ?></strong></td>
+                                                    <td style="background-color:<?= $color_depression ?>;"><strong><?= $depression ?><br><?= $type_depression ?></strong></td>
+                                                    <td style="background-color:<?= $color_anxiety ?>;"><strong><?= $anxiety ?><br><?= $type_anxiety ?></strong></td>
+                                                    <td style="background-color:<?= $color_stress ?>;"><strong><?= $stress ?><br><?= $type_stress ?></strong></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -186,48 +186,6 @@
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">
-                                Test Record
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table_default2">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Result</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $no = 1;
-                                        foreach ($scores as $score) : ?>
-                                            <?php if ($score->user_role == 'user') : ?>
-                                                <tr>
-                                                    <td><?= $no++ ?></td>
-                                                    <td>
-                                                        Depression = <?= $score->score_depression ?>
-                                                        <br>
-                                                        Anxiety = <?= $score->score_anxiety ?>
-                                                        <br>
-                                                        Stress = <?= $score->score_stress ?>
-                                                    </td>
-                                                    <td data-date="<?= strtotime($score->score_created_at) ?>"><?= date("d F Y", strtotime($score->score_created_at)) ?></td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <link rel="stylesheet" href="<?= base_url('assets/plugins') ?>/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/plugins') ?>/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/plugins') ?>/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets/plugins') ?>/datatables-buttons/css/buttons.bootstrap4.min.css">
 
     <link rel="stylesheet" href="<?= base_url('assets/dist') ?>/css/adminlte.min.css?v=3.2.0">
     <link rel="stylesheet" href="<?= base_url('assets/dist/css/style.css') ?>">
@@ -39,28 +42,8 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
+                    <span class="badge badge-warning navbar-badge"><?= $this->message_count ?></span>
+                </a>  
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -99,7 +82,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?php if ($title == 'Dashboard') : ?>Active<?php endif ?>">
+                            <a href="<?= base_url('web') ?>" class="nav-link <?php if ($title == 'Dashboard') : ?>Active<?php endif ?>">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -113,6 +96,59 @@
                                     Mental Health Test
                                 </p>
                             </a>
+                        </li>
+                        <!-- message tree -->
+                        <li class="nav-item has-treeview <?php if ($title == 'Message') : ?>menu-open<?php endif ?>">
+                            <a href="#" class="nav-link <?php if ($title == 'Message') : ?>Active<?php endif ?>">
+                                <i class="nav-icon fas fa-envelope"></i>
+                                <p>
+                                    Message
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?= base_url('web/message/compose') ?>" class="nav-link <?php if ($title == 'Compose') : ?>Active<?php endif ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Compose</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('web/message/inbox') ?>" class="nav-link <?php if ($title == 'Inbox') : ?>Active<?php endif ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Inbox</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('web/message/sent') ?>" class="nav-link <?php if ($title == 'Sent') : ?>Active<?php endif ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sent</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item <?php if ($title == 'Settings') : ?>menu-open<?php endif ?>">
+                            <a href="#" class="nav-link <?php if ($title == 'Settings') : ?>active<?php endif ?>">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Settings
+                                    <i class="right fas fa-angle-left left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?= base_url('web/settings/profile') ?>" class="nav-link <?= $this->uri->segment(3) == 'profile' ? 'active' : '' ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Profile</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('web/settings/password') ?>" class="nav-link <?= $this->uri->segment(3) == 'password' ? 'active' : '' ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Password</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('web/logout') ?>" class="nav-link">
