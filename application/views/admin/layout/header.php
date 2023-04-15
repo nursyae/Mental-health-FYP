@@ -75,7 +75,11 @@
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">
-                            <?= $this->user->user_name ?>
+                            <?php
+                            $name = $this->user->user_name;
+                            $name = wordwrap($name, 20, "<br />\n");
+                            echo $name;
+                            ?>
                         </a>
                     </div>
                 </div>
@@ -150,7 +154,7 @@
                                         <p>List Message</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">  
+                                <li class="nav-item">
                                     <a href="<?= base_url('admin/message/reply') ?>" class="nav-link <?= $this->uri->segment(3) == 'reply' ? 'active' : '' ?>">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Reply Message</p>

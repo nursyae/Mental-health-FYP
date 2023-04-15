@@ -43,7 +43,7 @@
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
                     <span class="badge badge-warning navbar-badge"><?= $this->message_count ?></span>
-                </a>  
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -73,7 +73,11 @@
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">
-                            <?= $this->user->user_name ?>
+                            <?php
+                            $name = $this->user->user_name;
+                            $name = wordwrap($name, 20, "<br />\n");
+                            echo $name;
+                            ?>
                         </a>
                     </div>
                 </div>

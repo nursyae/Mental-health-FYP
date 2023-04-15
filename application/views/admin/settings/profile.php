@@ -40,28 +40,6 @@
                                         </div>
                                         <span class="text-danger font-weight-bold"><?= form_error('student_fullname') ?></span>
                                     </div>
-                                    <div class="col-lg-6 col-12">
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Student ID" name="student_id" value="<?= $user->user_matrix_number ?>">
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-user"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="text-danger font-weight-bold"><?= form_error('student_id') ?></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Programme" name="student_programme" value="<?= $user->user_programme ?>">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-list"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="text-danger font-weight-bold"><?= form_error('student_programme') ?></span>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-12">

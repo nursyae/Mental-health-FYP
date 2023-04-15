@@ -6,31 +6,39 @@ class Web extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Users_model');
-		$this->load->model('Question_model');
-		$this->load->model('Score_model');
-		$this->load->model('Message_model');
-		$this->load->helper('Alert_helper');
-
-		$this->message_count = count($this->Message_model->list_status(0));
+		$this->load->model('users_model');
+		$this->load->model('question_model');
+		$this->load->model('score_model');
+		$this->load->model('message_model');
+		$this->load->helper('alert_helper');
 
 		if (!$this->session->userdata('session_user')) {
-			die('Need login first');
+			$this->session->set_flashdata('message', alert_message('Please login first', 'danger'));
+			redirect('login');
 		} else {
 			$this->user = $this->session->userdata('session_user');
+			$this->message_count = count($this->message_model->list_seen_by_user_id(0, $this->user->user_id));
 		}
 	}
 
 	public function index()
 	{
 		$data['title'] = "Dashboard";
-		$skore = $this->Score_model->get_skore_latest($this->user->user_id);
-		$data['score'] = array(
-			'depression' => $skore->score_depression,
-			'anxiety' => $skore->score_anxiety,
-			'stress' => $skore->score_stress,
-		);
-		$data['scores'] = $this->Score_model->listing($this->user->user_id);
+		$skore = $this->score_model->get_skore_latest($this->user->user_id);
+		if ($skore) {
+			$data['score'] = array(
+				'depression' => $skore->score_depression,
+				'anxiety' => $skore->score_anxiety,
+				'stress' => $skore->score_stress,
+			);
+		} else {
+			$data['score'] = array(
+				'depression' => 0,
+				'anxiety' => 0,
+				'stress' => 0,
+			);
+		}
+		$data['scores'] = $this->score_model->listing($this->user->user_id);
 		$this->load->view('web/layout/header', $data);
 		$this->load->view('web/dashboard');
 		$this->load->view('web/layout/footer');
@@ -60,12 +68,12 @@ class Web extends CI_Controller
 				'score_anxiety' => $anxiety,
 				'score_stress' => $stress,
 			);
-			$this->Score_model->create($dataSkore);
+			$this->score_model->create($dataSkore);
 			$this->session->set_flashdata('message', alert_message('Skor has been added', 'success'));
 			redirect(base_url('web/result'));
 		} else {
 			$data['title'] = "Mental Health Test";
-			$data['questions'] = $this->Question_model->listing();
+			$data['questions'] = $this->question_model->listing();
 			$this->load->view('web/layout/header', $data);
 			$this->load->view('web/question/add');
 			$this->load->view('web/layout/footer');
@@ -76,7 +84,7 @@ class Web extends CI_Controller
 	{
 		$data['title'] = "Result";
 
-		$skore = $this->Score_model->get_skore_latest($this->user->user_id);
+		$skore = $this->score_model->get_skore_latest($this->user->user_id);
 		$data['score'] = array(
 			'depression' => $skore->score_depression,
 			'anxiety' => $skore->score_anxiety,
@@ -117,7 +125,7 @@ class Web extends CI_Controller
 							$dataMessage['message_attachment'] = $file['file_name'];
 						}
 					}
-					$this->Message_model->create($dataMessage);
+					$this->message_model->create($dataMessage);
 					$this->session->set_flashdata('message', alert_message('Message has been sent', 'success'));
 					redirect(base_url('web/message/compose'));
 				}
@@ -128,13 +136,14 @@ class Web extends CI_Controller
 			$this->load->view('web/layout/footer');
 		} elseif ($method == 'inbox') {
 			$data['title'] = "Inbox";
-			$data['messages'] = $this->Message_model->listing_received($this->user->user_id);
+			$data['messages'] = $this->message_model->listing_received($this->user->user_id);
+			$this->message_model->update_seen_by_user_id($this->user->user_id);
 			$this->load->view('web/layout/header', $data);
 			$this->load->view('web/message/inbox');
 			$this->load->view('web/layout/footer');
 		} elseif ($method == 'sent') {
 			$data['title'] = "Sent";
-			$data['messages'] = $this->Message_model->listing_sent($this->user->user_id);
+			$data['messages'] = $this->message_model->listing_sent($this->user->user_id);
 			$this->load->view('web/layout/header', $data);
 			$this->load->view('web/message/sent');
 			$this->load->view('web/layout/footer');
@@ -160,12 +169,12 @@ class Web extends CI_Controller
 				$this->form_validation->set_rules('student_email', 'email', 'required', array('required' => 'Enter student email'));
 				$this->form_validation->set_rules('student_phone', 'phone number', 'required', array('required' => 'Enter phone number'));
 
-				if ($this->Users_model->get_by_email($this->input->post('student_email')) && $this->input->post('student_email') != $this->user->user_email) {
+				if ($this->users_model->get_by_email($this->input->post('student_email')) && $this->input->post('student_email') != $this->user->user_email) {
 					$this->session->set_flashdata('message', alert_message('Email Already Exist', 'danger'));
 					redirect(base_url('web/settings/profile'));
 				}
 
-				if ($this->Users_model->get_by_matrix_number($this->input->post('student_id')) && $this->input->post('student_id') != $this->user->user_matrix_number) {
+				if ($this->users_model->get_by_matrix_number($this->input->post('student_id')) && $this->input->post('student_id') != $this->user->user_matrix_number) {
 					$this->session->set_flashdata('message', alert_message('Student ID Already Exist', 'danger'));
 					redirect(base_url('web/settings/profile'));
 				}
@@ -179,12 +188,13 @@ class Web extends CI_Controller
 						'user_phone_number' => $this->input->post('student_phone'),
 						'user_programme' => $this->input->post('student_programme')
 					);
-					$this->Users_model->update($this->user->user_id, $dataUser);
+					$this->users_model->update($this->user->user_id, $dataUser);
 					$this->session->set_flashdata('message', alert_message('Profile has been updated', 'success'));
 					redirect(base_url('web/settings/profile'));
 				}
 			}
 			$data['title'] = "Profile";
+			$data['user'] = $this->users_model->get_by_id($this->user->user_id);
 			$this->load->view('web/layout/header', $data);
 			$this->load->view('web/settings/profile');
 			$this->load->view('web/layout/footer');
@@ -204,7 +214,7 @@ class Web extends CI_Controller
 					$dataUser = array(
 						'user_password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
 					);
-					$this->Users_model->update($this->user->user_id, $dataUser);
+					$this->users_model->update($this->user->user_id, $dataUser);
 					$this->session->set_flashdata('message', alert_message('Password has been updated', 'success'));
 					redirect(base_url('web/settings/password'));
 				}

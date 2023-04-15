@@ -105,12 +105,31 @@ class Message_model extends CI_Model
         return $query->result();
     }
 
+    public function list_seen_by_user_id($seen, $user_id)
+    {
+        $this->db->select('*');
+        $this->db->from('message');
+        $this->db->join('users', 'users.user_id = message.message_user_id', 'left');
+        $this->db->where('message_seen', $seen);
+        $this->db->where('message_user_id', $user_id);
+        $this->db->order_by('message_id', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function update_status($id = null)
     {
         $this->db->set('message_status', 1);
         if ($id != null) {
             $this->db->where('message_id', $id);
         }
+        $this->db->update('message');
+    }
+
+    public function update_seen_by_user_id($user_id)
+    {
+        $this->db->set('message_seen', 1);
+        $this->db->where('message_user_id', $user_id);
         $this->db->update('message');
     }
 }
